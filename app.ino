@@ -11,12 +11,26 @@ char flag ;
 void setup() {
   Serial.begin(9600);
   Blue.begin(9600);
+  pinMode(0, OUTPUT);
+  pinMode(1, OUTPUT);
+  pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
-  pinMode(5 , OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
-  pinMode(A3, OUTPUT);
-  pinMode(A2, OUTPUT);
-  pinMode(A5, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
+  pinMode(A4, INPUT);
+  pinMode(A5, INPUT);
 
 }
 void YL_1(int yl69) {
@@ -184,49 +198,78 @@ void function (char flag) {
       digitalWrite(0, 1);
       break;
     case 'G':
-        Serial.println("Pump_4 : now off");
-        digitalWrite(0,0);
-      }
+      Serial.println("Pump_4 : now off");
+      digitalWrite(0, 0);
+  }
 
-      }
+}
 
-        void loop() {
-        // put your main code here, to run repeatedly:
-        k = 0 ;
-        Ldr2 = analogRead(A1);
-        thermistor2 = analogRead(A0);
-        y12_1 = analogRead(A2);
-        y12_2 = analogRead(A3);
-        y12_3 = analogRead(A4);
-        y12_4 = analogRead(A5);
+void loop() {
+  // put your main code here, to run repeatedly:
+  k = 0 ;
+  Ldr2 = analogRead(A1);
+  thermistor2 = analogRead(A0);
+  y12_1 = analogRead(A2);
+  y12_2 = analogRead(A3);
+  y12_3 = analogRead(A4);
+  y12_4 = analogRead(A5);
+  String D = "-d";
+  if (D == "-d") {
+    Serial.print("Mode:");
+    Serial.print(isAuto);
+    Serial.print("|A0:");
+    Serial.print(analogRead(A0));
+    Serial.print("|A1:");
+    Serial.print(analogRead(A1));
+    Serial.print("|A2:");
+    Serial.print(analogRead(A2));
+    Serial.print("|A3:");
+    Serial.print(analogRead(A3));
+    Serial.print("|A4:");
+    Serial.print(analogRead(A4));
+    Serial.print("|A5:");
+    Serial.print(analogRead(A5));
+    Serial.print("|D0");
+    Serial.print(digitalRead(0));
+    Serial.print("|D1");
+    Serial.print(digitalRead(1));
+    Serial.print("|D2");
+    Serial.print(digitalRead(2));
+    Serial.print("|D3");
+    Serial.print(digitalRead(3));
+    Serial.print("|D4");
+    Serial.print(digitalRead(5));
+    Serial.print("|D6");
+    Serial.print(digitalRead(7));
+    Serial.print("|D1");
+    Serial.println(digitalRead(1));
 
-
-
-        if (Blue.available() > 0 ) {
-        Serial.print("Flag :");
-        Serial.println(flag);
-        flag = Blue.read();
-        switch (flag)  {
-        case 'A':
+  }
+  if (Blue.available() > 0 ) {
+    Serial.print("Flag :");
+    Serial.println(flag);
+    flag = Blue.read();
+    switch (flag)  {
+      case 'A':
         isAuto = 1 ;
         break;
-        case 'M' :
+      case 'M' :
         isAuto = 0;
         break;
-      }
-        Data(flag);
-      }
+    }
+    Data(flag);
+  }
 
-        if (isAuto == 1) { // is Auto
-        LDR(Ldr2);
-        YL_1(y12_1);
-        YL_2(y12_2);
-        YL_3(y12_3);
-        YL_4(y12_4);
+  if (isAuto == 1) { // is Auto
+    LDR(Ldr2);
+    YL_1(y12_1);
+    YL_2(y12_2);
+    YL_3(y12_3);
+    YL_4(y12_4);
 
-        thermistor(thermistor2);
+    thermistor(thermistor2);
 
-      } else if (isAuto == 0 ) { // is manual
-        function(flag);
-      }
-      }
+  } else if (isAuto == 0 ) { // is manual
+    function(flag);
+  }
+}
